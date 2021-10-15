@@ -14,7 +14,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [TodoController::class,"tampilTodo"]);
-Route::post('/todo',[TodoController::class,"tambahTodo"]);
-Route::get('/todo/delete/{id}',[TodoController::class,"hapusTodo"]);
-Route::get('/todo/update/{id}',[TodoController::class,"updateTodo"]);
+Route::redirect('/', '/home', 301);
+
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/todo', [TodoController::class,"tampilTodo"])->name("todo.tampiltodo");
+    Route::post('/todo',[TodoController::class,"tambahTodo"])->name("todo.nambahtodo");
+    Route::get('/todo/delete/{id}',[TodoController::class,"hapusTodo"])->name("todo.hapustodo");
+    Route::get('/todo/update/{id}',[TodoController::class,"updateTodo"])->name("todo.updatetodo");
+
+});
+
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

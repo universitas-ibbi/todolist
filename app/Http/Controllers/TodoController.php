@@ -14,7 +14,7 @@ class TodoController extends Controller
         // $todolist = \DB::table("tbltodo")->get();
 
         // Eloquent
-        $todolist = Todo::all();
+        $todolist = Todo::paginate(10);
 
         return view("todo")
                 ->with("todoList",$todolist);
@@ -36,7 +36,9 @@ class TodoController extends Controller
             "status" => "pending"
         ]);
 
-        return redirect("/");
+        return redirect()
+            ->route("todo.tampiltodo")
+            ->with("info","Berhasil Tambah Todo");
     }
 
     public function hapusTodo($id){
@@ -46,7 +48,9 @@ class TodoController extends Controller
         // Eloquent
         Todo::where("id",$id)->delete();
 
-        return redirect("/");
+        return redirect()
+            ->route("todo.tampiltodo")
+            ->with("info","Berhasil Hapus Todo");
     }
 
     public function updateTodo($id){
@@ -61,6 +65,8 @@ class TodoController extends Controller
             "status" => "selesai"
         ]);
 
-        return redirect("/");
+        return redirect()
+                ->route("todo.tampiltodo")
+                ->with("info","Berhasil Update Todo");
     }
 }
